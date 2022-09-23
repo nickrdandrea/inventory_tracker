@@ -17,7 +17,7 @@ class ItemResource(Resource):
         return [ItemSchema().dump(item) for item in items], 200
 
     @token_required
-    def post(self):
+    def post(self, current_user):
         req_json = request.get_json()
         vendor_id = self._get_vendor_id(req_json["vendor"])
         for item_json in req_json["items"]:

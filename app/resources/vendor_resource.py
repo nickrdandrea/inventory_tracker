@@ -15,7 +15,7 @@ class VendorResource(Resource):
         return [VendorSchema().dump(vendor) for vendor in vendors]
 
     @token_required
-    def post(self):
+    def post(self, current_user):
         req_json = request.get_json()
         try:
             vendor = VendorSchema().load(req_json)
