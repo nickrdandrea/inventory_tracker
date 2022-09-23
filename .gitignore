@@ -1,0 +1,10 @@
+# Compiled
+__pycache__/
+
+# Database
+app.db
+
+# Environments
+.env*
+.venv
+.vscode
