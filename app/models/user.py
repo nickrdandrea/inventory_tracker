@@ -10,6 +10,8 @@ class User(db.Model):
     name = db.Column(db.String(128), unique=True)
     password_hash = db.Column(db.String(128))
 
+    alerts = db.relationship("Alert", backref="user")
+
     def __repr__(self):
         return "User (" f"id={self.id!r}, " f"name={self.name!r})"
 
