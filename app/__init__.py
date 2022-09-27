@@ -6,7 +6,7 @@ from config import Config
 
 db = SQLAlchemy()
 
-from app.resources import ItemResource, LoginResource, RegisterResource, VendorResource
+from app.resources import ItemResource, LoginResource, RegisterResource, VendorResource, AlertResource
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -20,6 +20,7 @@ def create_app(config_class=Config):
     api.add_resource(VendorResource, "/vendors")
     api.add_resource(LoginResource, "/login")
     api.add_resource(RegisterResource, "/register")
+    api.add_resource(AlertResource, "/alerts")
 
     CORS(app)
     return app
