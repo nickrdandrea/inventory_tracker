@@ -49,6 +49,24 @@ class ResourceCase(unittest.TestCase):
         assert response.status_code == 200
         assert "token" in json.keys()
 
+    def test_alert_get(self):
+        response = self.client.get("/alerts")
+        assert response.status_code == 200
+        
+    def test_alert_post(self):
+        token = jwt.encode(
+            {
+                "id": str(1),
+                "exp": datetime.utcnow() + timedelta(minutes=45),
+            },
+            os.getenv("SECRET_KEY"),
+            "HS256",
+        )
+        alert_data = {"description": "Item test", "category": "Tests", "vendor_id": 1}
+        header = {"x-access-tokens": token}
+        response = self.client.post("/alerts", json=alert_data, headers=header)
+        assert response.status_code == 201
+
     def test_vendor_get(self):
         response = self.client.get("/vendors")
         assert response.status_code == 200
