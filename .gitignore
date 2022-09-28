@@ -2,7 +2,7 @@
 __pycache__/
 
 # Database
-app.db
+*.db
 
 # Environments
 .env*
