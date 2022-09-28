@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+export default function App() {
+  const item = {
+    id: 1,
+    description: 'Pokemon cards',
+    category: 'TCG',
+    url: 'site.com/pokemoncards',
+    vendor_id: 1,
+  }
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Tracker</h1>
+      <p>
+        <b>{item.description}</b>
+        <br />
+        {item.category}
+        <br />
+        {item.url}
+      </p>
+    </>
   );
 }
-
-export default App;
