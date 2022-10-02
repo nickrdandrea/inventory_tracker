@@ -1,22 +1,15 @@
-export default function App() {
-  const item = {
-    id: 1,
-    description: 'Pokemon cards',
-    category: 'TCG',
-    url: 'site.com/pokemoncards',
-    vendor_id: 1,
-  }
+import Container from 'react-bootstrap/Container';
+import Header from './components/Header';
+import Body from './components/Body';
+import ItemFeed from './components/ItemFeed';
 
+export default function App() {
   return (
-    <>
-      <h1>Tracker</h1>
-      <p>
-        <b>{item.description}</b>
-        <br />
-        {item.category}
-        <br />
-        {item.url}
-      </p>
-    </>
+    <Container fluid className="App">
+      <Header />
+      <Body sidebar>
+        <ItemFeed />
+      </Body>
+    </Container>
   );
 }
