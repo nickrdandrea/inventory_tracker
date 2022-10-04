@@ -1,6 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header';
+import Navigation from './components/Navigation';
 import FeedPage from './pages/FeedPage';
 import VendorsPage from './pages/VendorsPage';
 import UserPage from './pages/UserPage';
@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Container fluid className="App">
       <BrowserRouter>
-        <Header />
+        <Navigation />
         <Routes>
           <Route path="/" element={<FeedPage />} />
           <Route path="/vendors" element={<VendorsPage />} />
