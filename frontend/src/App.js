@@ -5,6 +5,7 @@ import FeedPage from './pages/FeedPage';
 import VendorsPage from './pages/VendorsPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/vendors" element={<VendorsPage />} />
           <Route path="/user/:username" element={<UserPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

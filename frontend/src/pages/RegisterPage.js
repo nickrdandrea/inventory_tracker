@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Body from '../components/Body';
 import InputField from '../components/InputField';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [formErrors, setFormErrors] = useState({});
 
   const onSubmit = (ev) => {
@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   return (
     <Body>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <Form onSubmit={onSubmit}>
         <InputField
           name="username" label="Username or email address"
@@ -22,7 +22,7 @@ export default function LoginPage() {
         <InputField
           name="password" label="Password" type="password"
           error={formErrors.password} />
-        <Button variant="primary" type="submit">Login</Button>
+        <Button variant="primary" type="submit">Register</Button>
       </Form>
     </Body>
   );

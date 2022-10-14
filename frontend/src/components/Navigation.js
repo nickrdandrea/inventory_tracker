@@ -22,7 +22,7 @@ export default function Navigation() {
               <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link as={NavLink} to="/">Register</Nav.Link>
+              <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
