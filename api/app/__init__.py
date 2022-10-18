@@ -1,10 +1,11 @@
 from flask import Flask
-from flask_cors import CORS
+from flask_login import LoginManager
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
 db = SQLAlchemy()
+login = LoginManager()
 
 from app.resources import ItemResource, LoginResource, RegisterResource, VendorResource, AlertResource
 
@@ -14,6 +15,7 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     db.create_all(app=app)
+    login.init_app(app)
 
     api = Api(app)
     api.add_resource(ItemResource, "/")
@@ -22,5 +24,4 @@ def create_app(config_class=Config):
     api.add_resource(RegisterResource, "/register")
     api.add_resource(AlertResource, "/alerts")
 
-    CORS(app)
     return app
