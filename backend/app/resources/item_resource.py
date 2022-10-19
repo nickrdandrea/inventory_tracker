@@ -8,7 +8,7 @@ from app import db
 from app.models.vendor import Vendor
 from app.models.item import Item
 from app.schemas.item_schema import ItemSchema
-from app.auth_util import token_required
+from app.auth import token_required
 
 
 class ItemResource(Resource):

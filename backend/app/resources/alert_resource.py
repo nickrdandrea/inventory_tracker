@@ -8,7 +8,7 @@ from app import db
 from app.models.vendor import Vendor
 from app.models.alert import Alert
 from app.schemas.alert_schema import AlertSchema
-from app.auth_util import token_required
+from app.auth import token_required
 
 
 class AlertResource(Resource):

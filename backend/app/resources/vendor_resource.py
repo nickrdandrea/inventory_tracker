@@ -6,7 +6,7 @@ from sqlite3 import IntegrityError
 from app.models.vendor import Vendor
 from app.schemas.vendor_schema import VendorSchema
 from app import db
-from app.auth_util import token_required
+from app.auth import token_required
 
 
 class VendorResource(Resource):

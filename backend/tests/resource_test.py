@@ -4,7 +4,8 @@ import os
 import unittest
 import jwt
 import requests
-from app import create_app, db
+from app import create_app
+from app.db import db
 from app.models import User, Vendor
 from config import Config
 
