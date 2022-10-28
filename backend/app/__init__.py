@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_restful import Api
 
@@ -8,7 +7,6 @@ from app.db import db, populate_db
 from app.resources import ItemResource, LoginResource, RegisterResource, VendorResource, AlertResource
 
 
-login = LoginManager()
 migrate = Migrate()
 
 
@@ -20,7 +18,6 @@ def create_app(config_class=Config):
     db.init_app(app)
     # db.create_all(app=app)
     # populate_db(app)
-    login.init_app(app)
 
     api = Api(app)
     api.add_resource(ItemResource, "/")
