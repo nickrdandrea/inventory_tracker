@@ -6,7 +6,6 @@ from sqlite3 import IntegrityError
 from app.models.vendor import Vendor
 from app.schemas.vendor_schema import VendorSchema
 from app import db
-from app.auth import token_required
 
 
 class VendorResource(Resource):
@@ -14,7 +13,6 @@ class VendorResource(Resource):
         vendors = Vendor.query.all()
         return [VendorSchema().dump(vendor) for vendor in vendors]
 
-    @token_required
     def post(self, current_user):
         req_json = request.get_json()
         try:

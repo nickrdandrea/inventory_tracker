@@ -5,10 +5,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
 
 from app import db
-from app.models.vendor import Vendor
-from app.models.item import Item
+from app.models import Item, Vendor
 from app.schemas.item_schema import ItemSchema
-from app.auth import token_required
 
 
 class ItemResource(Resource):
@@ -16,7 +14,6 @@ class ItemResource(Resource):
         items = Item.query.all()
         return [ItemSchema().dump(item) for item in items], 200
 
-    @token_required
     def post(self, current_user):
         req_json = request.get_json()
         vendor_id = self._get_vendor_id(req_json["vendor"])

@@ -1,4 +1,3 @@
-from flask import request
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
@@ -9,9 +8,9 @@ class LoginResource(Resource):
     def __init__(self) -> None:
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('username', type = str, required = True,
-            help = 'No username provided')
+            help = 'No username provided.')
         self.reqparse.add_argument('password', type = str, required = True,
-            help = 'No password provided')
+            help = 'No password provided.')
         super(LoginResource, self).__init__()
 
     def post(self):

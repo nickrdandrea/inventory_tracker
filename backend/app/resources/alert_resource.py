@@ -8,7 +8,6 @@ from app import db
 from app.models.vendor import Vendor
 from app.models.alert import Alert
 from app.schemas.alert_schema import AlertSchema
-from app.auth import token_required
 
 
 class AlertResource(Resource):
@@ -16,7 +15,6 @@ class AlertResource(Resource):
         alerts = Alert.query.all()
         return [AlertSchema().dump(alert) for alert in alerts], 200
 
-    @token_required
     def post(self, current_user):
         req_json = request.get_json()
         try:
