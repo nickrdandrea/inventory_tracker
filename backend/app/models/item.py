@@ -13,7 +13,7 @@ class Item(db.Model):
     last_updated = db.Column(db.DateTime, onupdate=db.func.now())
     __table_args__ = (
         db.UniqueConstraint(
-            "description", "vendor_id", name="_description_vendor_id_uc", sqlite_on_conflict='IGNORE'
+            "description", "vendor_id", name="_description_vendor_id_uc"
         ),
     )
 
