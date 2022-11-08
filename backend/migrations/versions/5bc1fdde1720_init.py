@@ -1,8 +1,8 @@
-"""empty message
+"""init
 
-Revision ID: cf00d474304a
+Revision ID: 5bc1fdde1720
 Revises: 
-Create Date: 2022-10-21 15:00:12.805076
+Create Date: 2022-11-08 15:21:31.537326
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cf00d474304a'
+revision = '5bc1fdde1720'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('url', sa.String(), nullable=True),
-    sa.Column('date_created', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('date_created', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('last_updated', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name', name='_vendor_name_uc')
@@ -38,9 +38,9 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('category', sa.String(), nullable=True),
-    sa.Column('user_id', sa.String(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('vendor_id', sa.Integer(), nullable=True),
-    sa.Column('date_created', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('date_created', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('last_updated', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.ForeignKeyConstraint(['vendor_id'], ['vendor.id'], ),
@@ -52,7 +52,7 @@ def upgrade():
     sa.Column('category', sa.String(), nullable=True),
     sa.Column('url', sa.String(), nullable=True),
     sa.Column('vendor_id', sa.Integer(), nullable=True),
-    sa.Column('date_created', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('date_created', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('last_updated', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['vendor_id'], ['vendor.id'], ),
     sa.PrimaryKeyConstraint('id'),

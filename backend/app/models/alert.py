@@ -7,7 +7,7 @@ class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String)
     category = db.Column(db.String, nullable=True)
-    user_id = db.Column(db.String, db.ForeignKey("user.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     vendor_id = db.Column(db.Integer, db.ForeignKey("vendor.id"))
     date_created = db.Column(db.DateTime, server_default=db.func.now())
     last_updated = db.Column(db.DateTime, onupdate=db.func.now())
