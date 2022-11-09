@@ -5,9 +5,12 @@ from app import db
 from app.models import Alert, Item, User, Vendor
 from app.schemas import ItemSchema
 
-def upsert_item(item: Item, vendor: Vendor):
-    upsert_values = ItemSchema(exclude=["id", "date_created"]).dump(item)
-    upsert_values["vendor_id"] = vendor.id
+def upsert_item(items: Item, vendor: Vendor):
+    upsert_values = []
+    for item in items:
+        item_values = ItemSchema(exclude=["id", "date_created"]).dump(item)
+        item_values["vendor_id"] = vendor.id
+        upsert_values.append(item_values)
     
     insert_stmt = insert(Item)
     upsert_stmt = insert_stmt.on_conflict_do_update(
