@@ -3,6 +3,8 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from redis import Redis
+import rq
 
 from config import Config
 
@@ -17,8 +19,9 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     db.init_app(app)
     # db.create_all(app=app)
-    # populate_db(app)
     jwt.init_app(app)
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('tracker-tasks', connection=app.redis)
 
     from app.resources import ItemResource, LoginResource, RegisterResource, VendorResource, AlertResource
 

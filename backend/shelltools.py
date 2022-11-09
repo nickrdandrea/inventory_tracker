@@ -26,9 +26,12 @@ def test_data():
 
 def test_upsert():
     vendors = Vendor.query.all()
-    item1 = Item(description='Upsert Item2', category='Test', url='testurl.com')
+    item1 = Item(description='Upsert Item3', category='Test', url='testurl.com')
+    item2 = Item(description='Upsert Item4', category='Test2', url='testurl.com')
+
+    items = [item1, item2]
 
     #ItemDao.add_item(item1, vendors[0])
-    upsert_item(item1, vendors[0])
+    upsert_item(items, vendors[0])
 
 
