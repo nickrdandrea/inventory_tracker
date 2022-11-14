@@ -20,10 +20,8 @@ def create_app(config_class=Config):
     
     migrate.init_app(app, db)
     db.init_app(app)
-    # db.create_all(app=app)
     jwt.init_app(app)
     cors.init_app(app)
-    app.config['CORS_HEADERS'] = 'Content-Type'
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('tracker-tasks', connection=app.redis)
 
