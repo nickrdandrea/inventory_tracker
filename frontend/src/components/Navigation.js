@@ -4,23 +4,23 @@ import { NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 
 export default function Navigation() {
-  return ( 
-    <Navbar bg="light" sticky="top" className="Header">
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <Navbar.Brand>
-            <Nav.Link as={NavLink} to="/">Inv Tracker</Nav.Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Nav>
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/vendors">Vendors</Nav.Link>
-            </Nav.Item>
+          <Nav.Link as={NavLink} to="/">Inventory Tracker</Nav.Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto ms-lg-3">
+            <Nav.Link href="/toytrove">ToyTrove</Nav.Link>
+            <Nav.Link href="/">Meeplemart</Nav.Link>
           </Nav>
-        <Navbar.Collapse>
-          <Nav className="justify-content-end">
+          <Nav>
             <Nav.Item>
               <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
             </Nav.Item>
+            <Nav.Link className="px-0 d-none d-lg-block">/</Nav.Link>
             <Nav.Item>
               <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
             </Nav.Item>

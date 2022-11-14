@@ -1,11 +1,12 @@
 import Container from 'react-bootstrap/Container';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import FeedPage from './pages/FeedPage';
+import Splash from './pages/Splash';
 import VendorsPage from './pages/VendorsPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ToyTrove from './pages/ToyTrove';
 
 export default function App() {
   return (
@@ -13,8 +14,8 @@ export default function App() {
       <BrowserRouter>
         <Navigation />
         <Routes>
-          <Route path="/" element={<FeedPage />} />
-          <Route path="/vendors" element={<VendorsPage />} />
+          <Route path="/" element={<Splash />} />
+          <Route path="/toytrove" element={<ToyTrove />} />
           <Route path="/user/:username" element={<UserPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
