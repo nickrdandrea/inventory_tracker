@@ -1,6 +1,5 @@
 from flask import request, current_app
 from flask_restful import Resource, abort
-from flask_cors import cross_origin
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
@@ -9,8 +8,13 @@ from app import db
 from app.models import Item, Vendor
 from app.schemas.item_schema import ItemSchema
 
-
 class ItemResource(Resource):
+
+    def get(self, item_id):
+        item = Item.query.where(Item.id == item_id).first()
+        return ItemSchema().dump(item), 200
+
+class ItemsResource(Resource):
 
     def get(self):
         items = Item.query.all()

@@ -33,14 +33,18 @@ export default function ItemFeed(props) {
             <tr>
               <th>Description</th>
               <th>Category</th>
+              {/* <th>Date Added</th>
+              <th>Last Updated</th> */}
             </tr>
           </thead>
           <tbody>
             {items.map(item => {
               return (
                 <tr key={item.id}>
-                  <td>{item.description}</td>
+                  <td><a href={item.url}>{item.description}</a></td>
                   <td>{item.category}</td>
+                  {/* <td>{item.date_created}</td>
+                  <td>{item.last_updated}</td> */}
                 </tr>
               )
             })
