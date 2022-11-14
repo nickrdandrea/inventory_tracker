@@ -3,17 +3,28 @@ from flask_restful import Resource, abort
 from marshmallow import ValidationError
 from sqlite3 import IntegrityError
 
-from app.models.vendor import Vendor
-from app.schemas.vendor_schema import VendorSchema
+from app.models import Item, Vendor
+from app.schemas import ItemSchema, VendorSchema
 from app import db
+
+def get_vendor_by_name(vendor_name):
+    vendor_name = vendor_name.lower().strip()
+    vendor_name = vendor_name.replace("-", " ")
+    vendor = Vendor.query.where(db.func.lower(Vendor.name) == vendor_name).first()
+    return vendor
 
 class VendorResource(Resource):
 
     def get(self, vendor_name):
-        vendor_name = vendor_name.lower().strip()
-        vendor_name = vendor_name.replace("-", " ")
-        vendor = Vendor.query.where(db.func.lower(Vendor.name) == vendor_name).first()
+        vendor = get_vendor_by_name(vendor_name)
         return VendorSchema().dump(vendor), 200
+
+class VendorItemResource(Resource):
+
+    def get(self, vendor_name, item_id):
+        vendor = get_vendor_by_name(vendor_name)
+        item = Item.query.where(Item.vendor_id == vendor.id).where(Item.id == item_id).first()
+        return ItemSchema().dump(item), 200
 
 class VendorsResource(Resource):
 
