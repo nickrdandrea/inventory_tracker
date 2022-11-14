@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from redis import Redis
@@ -11,6 +12,7 @@ from config import Config
 migrate = Migrate()
 jwt = JWTManager()
 db = SQLAlchemy()
+cors = CORS()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -20,6 +22,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     # db.create_all(app=app)
     jwt.init_app(app)
+    cors.init_app(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('tracker-tasks', connection=app.redis)
 
@@ -31,5 +35,25 @@ def create_app(config_class=Config):
     api.add_resource(LoginResource, "/login")
     api.add_resource(RegisterResource, "/register")
     api.add_resource(AlertResource, "/alerts")
+
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return response
+
+    @app.shell_context_processor
+    def make_shell_context():
+        return {
+                "db": db, 
+                "Alert": Alert, 
+                "Item": Item, 
+                "User": User, 
+                "Vendor": Vendor,
+                "test_data": test_data,
+                "test_upsert": test_upsert,
+                "updater": updater
+                }
 
     return app

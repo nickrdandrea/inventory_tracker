@@ -1,5 +1,6 @@
 from flask import request, current_app
 from flask_restful import Resource, abort
+from flask_cors import cross_origin
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
@@ -10,6 +11,7 @@ from app.schemas.item_schema import ItemSchema
 
 
 class ItemResource(Resource):
+
     def get(self):
         items = Item.query.all()
         return [ItemSchema().dump(item) for item in items], 200
