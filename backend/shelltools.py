@@ -3,6 +3,7 @@ from app.models import Item, Vendor
 from app.daos import ItemDao, VendorDao
 from app.db_utils import upsert_item
 
+
 def test_data():
     item1 = Item(description='Test Item', category='Test', url='testurl.com')
     item2 = Item(description='Test Item2', category='Test2', url='testurl.com')
@@ -33,5 +34,3 @@ def test_upsert():
 
     #ItemDao.add_item(item1, vendors[0])
     upsert_item(items, vendors[0])
-
-

@@ -30,10 +30,10 @@ def create_app(config_class=Config):
     from app.resources import VendorResource, VendorItemResource, VendorsResource
 
     api = Api(app)
-    api.add_resource(ItemsResource, "/")
     api.add_resource(ItemResource, "/<int:item_id>")
-    api.add_resource(VendorsResource, "/vendors")
+    api.add_resource(ItemsResource, "/")
     api.add_resource(VendorResource, "/<string:vendor_name>")
+    api.add_resource(VendorsResource, "/vendors")
     api.add_resource(VendorItemResource, "/<string:vendor_name>/<int:item_id>")
     api.add_resource(LoginResource, "/login")
     api.add_resource(RegisterResource, "/register")
@@ -45,18 +45,5 @@ def create_app(config_class=Config):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
-
-    @app.shell_context_processor
-    def make_shell_context():
-        return {
-                "db": db, 
-                "Alert": Alert, 
-                "Item": Item, 
-                "User": User, 
-                "Vendor": Vendor,
-                "test_data": test_data,
-                "test_upsert": test_upsert,
-                "updater": updater
-                }
-
+    
     return app

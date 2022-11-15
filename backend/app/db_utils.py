@@ -5,6 +5,26 @@ from app import db
 from app.models import Alert, Item, User, Vendor
 from app.schemas import ItemSchema
 
+def safe_commit():
+    try:
+        db.session.commit()
+        return True
+    except SQLAlchemyError as error:
+        db.session.rollback()
+        return False
+
+def add_vendor(name = "Test Vendor", url = "testurl.com"):
+    vendor = Vendor(name = name, url = url)
+    db.session.add(vendor)
+    safe_commit()
+    return vendor
+
+def drop_records(table: db.Model):
+    if not issubclass(table, db.Model):
+        raise TypeError(f"{table} is not a Model.")
+    table.query.delete()
+    return safe_commit()
+
 def upsert_item(items: Item, vendor: Vendor):
     upsert_values = []
     for item in items:
@@ -21,5 +41,6 @@ def upsert_item(items: Item, vendor: Vendor):
     try:
         db.session.execute(upsert_stmt, upsert_values)
         db.session.commit()
+        return True
     except IntegrityError as e:
-        abort(500, message="Unexpected Error!")
+        return False
