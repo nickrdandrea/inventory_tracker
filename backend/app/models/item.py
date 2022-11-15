@@ -1,5 +1,10 @@
+from sqlalchemy.dialects.postgresql import TSVECTOR
+
 from app import db
 
+
+# class TSVector(db.TypeDecorator): 
+#     impl = TSVECTOR
 
 class Item(db.Model):
     __tablename__ = "item"
@@ -11,7 +16,18 @@ class Item(db.Model):
     vendor_id = db.Column(db.Integer, db.ForeignKey("vendor.id"))
     date_created = db.Column(db.DateTime, server_default=db.func.now())
     last_updated = db.Column(db.DateTime, onupdate=db.func.now())
+    __ts_vector__ = db.func.to_tsvector(
+        'english',
+        db.cast(db.func.coalesce(description, ''), db.TEXT)
+    )    
+    # db.Column(TSVector(),db.Computed(
+    # "to_tsvector('english', description || ' ' || category)", persisted=True
+    # ))    
+    
     __table_args__ = (
+        db.Index(
+            'ix_item___ts_vector__', __ts_vector__, postgresql_using='gin'
+        ),
         db.UniqueConstraint(
             "description", "vendor_id", name="_description_vendor_id_uc"
         ),

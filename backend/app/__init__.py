@@ -25,7 +25,7 @@ def create_app(config_class=Config):
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('tracker-tasks', connection=app.redis)
 
-    from app.resources import ItemResource, ItemsResource
+    from app.resources import ItemResource, ItemsResource, SearchResource
     from app.resources import LoginResource, RegisterResource, AlertResource
     from app.resources import VendorResource, VendorItemResource, VendorsResource
 
@@ -38,6 +38,8 @@ def create_app(config_class=Config):
     api.add_resource(LoginResource, "/login")
     api.add_resource(RegisterResource, "/register")
     api.add_resource(AlertResource, "/alerts")
+    api.add_resource(SearchResource, "/search")
+
 
     @app.after_request
     def after_request(response):

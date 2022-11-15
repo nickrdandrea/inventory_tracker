@@ -5,6 +5,7 @@ from app import db
 from app.models import Alert, Item, User, Vendor
 from app.schemas import ItemSchema
 
+
 def safe_commit():
     try:
         db.session.commit()
@@ -12,6 +13,12 @@ def safe_commit():
     except SQLAlchemyError as error:
         db.session.rollback()
         return False
+
+def search_item(expression):
+    items = Item.query.filter(
+                Item.__ts_vector__.match(expression, postgresql_reqconfig='english')
+            ).all()
+    return items
 
 def add_vendor(name = "Test Vendor", url = "testurl.com"):
     vendor = Vendor(name = name, url = url)
@@ -25,7 +32,7 @@ def drop_records(table: db.Model):
     table.query.delete()
     return safe_commit()
 
-def upsert_item(items: Item, vendor: Vendor):
+def upsert_item(items: list[Item], vendor: Vendor):
     upsert_values = []
     for item in items:
         item_values = ItemSchema(exclude=["id", "date_created"]).dump(item)
