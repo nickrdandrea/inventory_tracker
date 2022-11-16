@@ -17,7 +17,8 @@ def make_shell_context():
             "test_upsert": test_upsert,
             "add_vendor": add_vendor,
             "drop_records": drop_records,
-            "search_item": search_item
+            "search_item": search_item,
+            "updater": updater
             }
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 class TheToyTrovePreorderScraper():
-    NAME = 'Test Vendor'
+    NAME = 'ToyTrove'
     BASE_URL = 'https://thetoytrove.crystalcommerce.com'
     URL = 'https://thetoytrove.crystalcommerce.com/advanced_search?buylist_mode=0&commit=Search&search%5Bbuy_price_gte%5D=&search%5Bbuy_price_lte%5D=&search%5Bcatalog_group_id_eq%5D=&search%5Bcategory_ids_with_descendants%5D%5B%5D=&search%5Bdirection%5D=ascend&search%5Bfuzzy_search%5D=&search%5Bin_stock%5D=0&search%5Bsell_price_gte%5D=&search%5Bsell_price_lte%5D=&search%5Bsort%5D=name&search%5Btags_name_eq%5D=preorders&utf8=%E2%9C%93'
 
