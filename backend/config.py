@@ -18,3 +18,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     CORS_HEADERS = 'Content-Type'
+    DEBUG = os.environ.get('DEBUG')
