@@ -21,7 +21,7 @@ export default function InventoryDisplay(props) {
                 if (response.ok) {
                     let results = await response.json();
                     setAllItems(results);    
-                    setDisplayedItems(results)
+                    setDisplayedItems(results);
                 } else {
                     setAllItems(null);
                 }

@@ -13,17 +13,12 @@ export default function SearchBar(props) {
         (async () => {
             if (searchTerms != null) {
                 let searchURL = SEARCH_API_URL + searchTerms
-                let response = await fetch(searchURL, {
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
-                });
+                let response = await fetch(searchURL);
                 if (response.ok) {
                     let results = await response.json();
                     props.callback(results);
                 } else {
                     props.callback(null);
-
                 }
             }
         })();
