@@ -1,10 +1,10 @@
 import Body from '../components/Body'
-import ItemFeed from '../components/ItemFeed'
+import InventoryDisplay from '../components/InventoryDisplay'
 
 export default function ToyTrove() {
     return (
         <Body>
-            <ItemFeed vendor="ToyTrove" />
+            <InventoryDisplay vendor="ToyTrove" />
         </Body>
     )
 }
