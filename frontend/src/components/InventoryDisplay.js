@@ -1,66 +1,63 @@
-import React from "react";
-import ItemTable from "./ItemTable";
+import { useEffect, useState } from "react";
 import Container from "react-bootstrap/esm/Container";
-
+import SearchBar from "./SearchBar"
+import FilterableItemTable from "./ItemTable";
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
 
-export default class InventoryDisplay extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            items: null,
-            searchTerms: null
-        };
-        this.fetchItems = this.fetchItems.bind(this);
-        this.renderItemTable = this.renderItemTable.bind(this);
-    }
+export default function InventoryDisplay(props) {
+    const [items, setItems] = useState(null);
+    const [searchTerms, setSearchTerms] = useState(null);
 
-    async fetchItems() {
-        try {
-            const response = await fetch(BASE_API_URL);
-            if (!response.ok) {
-              throw Error(response.statusText);
+    const fetchItems = async (search=false) => {
+        let url = BASE_API_URL
+        search && (
+            url = SEARCH_API_URL + searchTerms
+        )
+        let response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json'
             }
-            const json = await response.json();
-
-            this.setState({ items: json });
-            console.log("Fetch", this.state.items);
-        } catch(error) {
-            console.log(error);
-        }
-    }
-
-    componentDidMount() {
-        this.fetchItems();
-    }
-
-    renderItemTable() {
-        const tFilter = "category";
-        const tHeaders = ["description", "category"];
-        const tURLOn = "description";
-
-        if (this.state.items !== null) {
-            return <ItemTable items={this.state.items} headers={tHeaders} filter={tFilter} urlOn={tURLOn}/>
+        });
+        if (response.ok) {
+            let results = await response.json();
+            setItems(results);    
         } else {
-            return <h1>No items to display</h1>
+            setItems(null);
         }
     }
 
-    render() {
-        const tFilter = "category";
-        const tHeaders = ["description", "category"];
-        const tURLOn = "description";
+    useEffect(() => {
+        if (items === null) { fetchItems() }
+        if (searchTerms !== null) {fetchItems(true)}
+    },[items, searchTerms, fetchItems]);
 
-        return (
-            <Container>
-                {this.state.items !== null ? (
-                    <ItemTable items={this.state.items} headers={tHeaders} filter={tFilter} urlOn={tURLOn}/>
-                 ) : (
-                    <h1>No items to display</h1>
-                )}
-            </Container>
-        );
-    }
+    return (
+        <Container>
+            {items !== null && (
+                <FilterableItemTable items={items} />
+            )}
+        </Container>
+    );
 }
+
+
+// useEffect(() => {
+//     (async () => {
+//         if (allItems === null) {
+//             let response = await fetch(BASE_API_URL, {
+//                 headers: {
+//                   'Content-Type': 'application/json'
+//                 }
+//             });
+//             if (response.ok) {
+//                 let results = await response.json();
+//                 setAllItems(results);    
+//                 setDisplayedItems(results);
+//             } else {
+//                 setAllItems(null);
+//             }
+//         }
+//     })();
+// },[]);

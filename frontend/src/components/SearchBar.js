@@ -35,7 +35,7 @@ const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
 export default function SearchBar(props) {
     const [inputText, setInputText] = useState()
     const [searchTerms, setSearchTerms] = useState()
-
+    
     useEffect(() => {
         (async () => {
             if (searchTerms != null) {
@@ -55,21 +55,15 @@ export default function SearchBar(props) {
         return inputText.trim().replace(' ', '&');
     }
 
-    function handleChange(event) {
-        setInputText(event.target.value);
-    }
-
     function handleClick() {
         let searchTerms = cleanSearchTerms();
         setSearchTerms(searchTerms);
     }
 
     return (
-        <>
         <InputGroup className="my-3">
-            <Form.Control placeholder="Search" onChange={handleChange}/>
+            <Form.Control placeholder="Search" onChange={(e) => setInputText(e.target.value)}/>
             <Button variant="outline-secondary" type="button" onClick={handleClick}>Submit</Button>
         </InputGroup>
-        </>
     );
 }

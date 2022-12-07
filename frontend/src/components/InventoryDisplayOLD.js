@@ -1,48 +1,65 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import FilterableItemTable from "./ItemTable";
 import Container from "react-bootstrap/esm/Container";
-import SearchBar from "../components/SearchBar"
-import ItemTable from "./ItemTable";
+import SearchBar from "./SearchBar";
+
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
 
-export default function InventoryDisplay(props) {
-    const [allItems, setAllItems] = useState(null);
-    const [displayedItems, setDisplayedItems] = useState([]);
-    const [searchedItems, setSearchedItems] = useState();
+export default class InventoryDisplay extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: null,
+            searchTerms: null
+        };
+        this.fetchItems = this.fetchItems.bind(this);
+    }
 
-    useEffect(() => {
-        (async () => {
-            if (allItems === null) {
-                let response = await fetch(BASE_API_URL, {
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
-                });
-                if (response.ok) {
-                    let results = await response.json();
-                    setAllItems(results);    
-                    setDisplayedItems(results);
-                } else {
-                    setAllItems(null);
-                }
+    async fetchItems(vendor, search = false) {
+        const url = BASE_API_URL
+        search && (
+            url = SEARCH_API_URL + searchTerms
+        )
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw Error(response.statusText);
             }
-        })();
-    },[]);
-
-    function searchCallback(items) {
-        setSearchedItems(items);
-        setDisplayedItems(items);
+            const json = await response.json();
+            this.setState({ items: json });
+        } catch(error) {
+            console.log(error);
+        }
     }
 
-    function filterDisplayed(value) {
-        return displayedItems.filter((v,i,a)=>a.findIndex(v2=>[value].every(k=>v2[k] ===v[k]))===i)
+    async fetchSearch() {
+        try {
+            const response = await fetch(SEARCH_API_URL);
+            if (!response.ok) {
+              throw Error(response.statusText);
+            }
+            const json = await response.json();
+            this.setState({ items: json });
+        } catch(error) {
+            console.log(error);
+        }
     }
 
+    componentDidMount() {
+        this.fetchItems();
+    }
 
-    return (
-        <Container>
-            <SearchBar vendor={props.vendor} callback={searchCallback}/>
-            <ItemTable items={displayedItems} headers={["description", "category"]} filter={"category"}/>
-        </Container>
-    );
+    render() {
+        return (
+            <Container>
+                <SearchBar />
+                {this.state.items !== null && (
+                    <FilterableItemTable items={this.state.items} />
+                 )}
+            </Container>
+        );
+    }
 }
