@@ -1,69 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { InputGroup } from 'react-bootstrap';
 
-const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
-
-// export default class SearchBar extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             value: "",
-//             searchTerms: ""
-//         };
-//         this.handleChange = this.handleChange.bind(this);
-//         this.handleSubmit = this.handleSubmit.bind(this);
-//     }
-
-//     searchTerms() {
-//         return this.state.value.trim().replace(' ', '&');
-//     }
-    
-//     handleChange(e) {    this.setState({value: e.target.value});  }
-      
-//     handleSubmit(e) {
-//         let params = this.searchTerms()
-//         fetch(SEARCH_API_URL.concat(params))
-//         .then(response => response.json())
-//         .then(data => {
-//             this.setState({synList:data})
-//         });
-//     }
-
-// }
 export default function SearchBar(props) {
-    const [inputText, setInputText] = useState()
-    const [searchTerms, setSearchTerms] = useState()
-    
-    useEffect(() => {
-        (async () => {
-            if (searchTerms != null) {
-                let searchURL = SEARCH_API_URL + searchTerms
-                let response = await fetch(searchURL);
-                if (response.ok) {
-                    let results = await response.json();
-                    props.callback(results);
-                } else {
-                    props.callback(null);
-                }
-            }
-        })();
-    },[searchTerms, props]);
+    const [inputText, setInputText] = useState(null)
 
-    function cleanSearchTerms() {
-        return inputText.trim().replace(' ', '&');
+    const onSubmit = (e) => {
+        e.preventDefault()
+        if (inputText !== null) {
+            props.onSubmit(inputText)
+        }
     }
 
-    function handleClick() {
-        let searchTerms = cleanSearchTerms();
-        setSearchTerms(searchTerms);
-    }
+    const onChange = (e) => {setInputText(e.target.value)}
 
     return (
-        <InputGroup className="my-3">
-            <Form.Control placeholder="Search" onChange={(e) => setInputText(e.target.value)}/>
-            <Button variant="outline-secondary" type="button" onClick={handleClick}>Submit</Button>
-        </InputGroup>
+        <Form className="my-3" onSubmit={onSubmit}>
+            <InputGroup className="mb-3">
+                <Form.Control placeholder="Search" onChange={onChange}/>
+                <Button variant="outline-dark" type="submit">Search</Button>
+            </InputGroup>
+        </Form>
     );
 }

@@ -1,63 +1,50 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import SearchBar from "./SearchBar"
 import FilterableItemTable from "./ItemTable";
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
+const TABLE_PAGE_SIZE = 25;
 
 export default function InventoryDisplay(props) {
     const [items, setItems] = useState(null);
     const [searchTerms, setSearchTerms] = useState(null);
 
-    const fetchItems = async (search=false) => {
-        let url = BASE_API_URL
-        search && (
-            url = SEARCH_API_URL + searchTerms
-        )
-        let response = await fetch(url, {
-            headers: {
-                'Content-Type': 'application/json'
+    const fetchItems = useCallback(async (url) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw Error(response.statusText);
             }
-        });
-        if (response.ok) {
-            let results = await response.json();
-            setItems(results);    
-        } else {
-            setItems(null);
+            const json = await response.json();
+            setItems(json);
+        } catch(error) {
+            console.log(error);
         }
-    }
+    }, []);
 
-    useEffect(() => {
-        if (items === null) { fetchItems() }
-        if (searchTerms !== null) {fetchItems(true)}
-    },[items, searchTerms, fetchItems]);
+    const loadEffect = useEffect(() => {
+        if (items === null) { 
+            fetchItems(BASE_API_URL); 
+        } 
+    }, [items, fetchItems]);
+
+    const searchEffect = useEffect(() => {
+        const prepTerms = (terms) => { return terms.trim().replace(' ', '&'); }
+        if (searchTerms !== null) {
+            fetchItems(SEARCH_API_URL + prepTerms(searchTerms));
+        }
+    }, [searchTerms, fetchItems]);
+
+    const onSubmit  = (input) => { setSearchTerms(input); }
 
     return (
         <Container>
+            <SearchBar onSubmit={onSubmit} />
             {items !== null && (
-                <FilterableItemTable items={items} />
+                <FilterableItemTable items={items} pageSize={TABLE_PAGE_SIZE}/>
             )}
         </Container>
     );
 }
-
-
-// useEffect(() => {
-//     (async () => {
-//         if (allItems === null) {
-//             let response = await fetch(BASE_API_URL, {
-//                 headers: {
-//                   'Content-Type': 'application/json'
-//                 }
-//             });
-//             if (response.ok) {
-//                 let results = await response.json();
-//                 setAllItems(results);    
-//                 setDisplayedItems(results);
-//             } else {
-//                 setAllItems(null);
-//             }
-//         }
-//     })();
-// },[]);
