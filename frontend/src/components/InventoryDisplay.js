@@ -43,6 +43,7 @@ export default function InventoryDisplay(props) {
         <Container>
             <SearchBar onSubmit={onSubmit} />
             {items !== null && (
+                console.log(items),
                 <FilterableItemTable items={items} pageSize={TABLE_PAGE_SIZE}/>
             )}
         </Container>
