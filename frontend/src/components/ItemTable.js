@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Pagination from 'react-bootstrap/Pagination';
 
-function FilterDropDown(props) {
+function FilterDropDown({ title, filterValues, onClick }) {
     return (
-        <DropdownButton id="dropdown-button" title={props.title} variant="outline-dark">
-            {props.filterValues.map(value => {
-                return (<Dropdown.Item key={value} as="button" value={value} onClick={props.onFilter}>{value}</Dropdown.Item>)
+        <DropdownButton id="dropdown-button" title={title} variant="outline-dark">
+            <Dropdown.Item key="000" as="button" value="clear" onClick={onClick}>Clear Filter</Dropdown.Item>
+            {filterValues.map(value => {
+                return (<Dropdown.Item key={value} as="button" value={value} onClick={onClick}>{value}</Dropdown.Item>)
             })}
         </DropdownButton>
     )
 }
 
-function ItemTableBody(props) {  
+function ItemTableBody({ items }) {  
     return (
         <tbody>
-            {props.items !== null && (
-                props.items.map(item => {
+            {items !== null && (
+                items.map(item => {
                     return (
                         <tr key={item.id}>
                             <td><a href={item.url}>{item.description}</a></td>
@@ -31,51 +32,59 @@ function ItemTableBody(props) {
     )
 }
 
-function SimplePagination(props) {
+function SimplePagination({currentPage, numOfPages, onClick}) {
     return (
         <Pagination>
-            <Pagination.Prev disabled={props.currentPage == 1} onClick={() => props.onClick(props.currentPage - 1)}/>
-            {[...Array(props.numPages)].map((x, i) => {
+            <Pagination.Prev disabled={currentPage == 1} onClick={() => onClick(currentPage - 1)}/>
+            {[...Array(numOfPages)].map((x, i) => {
                 let pagiNum = i + 1
                 return (
-                    <Pagination.Item key={pagiNum} active={pagiNum == props.currentPage} onClick={() => props.onClick(pagiNum)}>
+                    <Pagination.Item key={pagiNum} active={pagiNum == currentPage} onClick={() => onClick(pagiNum)}>
                         {pagiNum}
                     </Pagination.Item>
                 )
             })}
-            <Pagination.Next disabled={props.currentPage == props.numPages} onClick={() => props.onClick(props.currentPage + 1)}/>
+            <Pagination.Next disabled={currentPage == numOfPages} onClick={() => onClick(currentPage + 1)}/>
         </Pagination>
     )
 }
 
-export default function FilterableItemTable(props) {
-    const [selectedFilter, setSelectedFilter] = useState(null)
+function paginateList(list, pageSize) {
+    let pageStart = 0
+    let pageEnd = pageSize
+    let numOfPages = Math.ceil(list.length / pageSize)
+
+    let pages = [...Array(numOfPages)].map((page) => {
+        page = list.slice(pageStart, pageEnd)
+        pageStart += pageSize
+        pageEnd += pageSize
+        return page
+    })
+    return pages
+}
+
+export default function FilterableItemTable({items, pageSize}) {
     const [currentPage, setCurrentPage] = useState(1)
+    const [pages, setPages] = useState(paginateList(items, pageSize))
 
-    const getFilterValues = (filter) => {
-        return [...new Set(props.items.map((item) => item[filter]))];
+    const filterAttribute = {
+        accessor: "category",
+        display: "Category"
     }
 
-    const filteredItems = () => {
-        return props.items.filter(item => item["category"] === selectedFilter)
-    }
+    const filterValues = [...new Set(items.map((item) => item[filterAttribute.accessor]))]
 
     const handleFilterChange = (e) => {
-        setSelectedFilter(e.target.value);
+        setCurrentPage(1)
+        if (e.target.value === "clear") {
+            setPages(paginateList(items, pageSize))
+        } else {
+            setPages(paginateList(items.filter(item => item[filterAttribute.accessor] === e.target.value), pageSize))
+        }
     }
 
     const handlePageChange = (value) => {
         setCurrentPage(parseInt(value));
-    }
-
-    const getNumPages = () => {
-        return Math.ceil(props.items.length / props.pageSize)
-    }
-
-    const getPageItems = (items) => {
-        let pageEnd = currentPage * props.pageSize;
-        let pageStart = pageEnd - props.pageSize;
-        return items.slice(pageStart, currentPage * props.pageSize)
     }
 
     return (
@@ -84,16 +93,12 @@ export default function FilterableItemTable(props) {
                 <thead>
                     <tr>
                         <th>Description</th>
-                        <th><FilterDropDown title="Category" filterValues={getFilterValues("category")} onFilter={handleFilterChange} /></th>
+                        <th><FilterDropDown title={filterAttribute.display} filterValues={filterValues} onClick={handleFilterChange} /></th>
                     </tr>
                 </thead>
-                {selectedFilter !== null ? (
-                    <ItemTableBody items={getPageItems(filteredItems())}/>
-                ) : (
-                    <ItemTableBody items={getPageItems(props.items)}/>
-                )}
+                <ItemTableBody items={pages[currentPage - 1]}/>
             </Table>
-            <SimplePagination currentPage={currentPage} numPages={getNumPages()} onClick={handlePageChange}/>
+            <SimplePagination currentPage={currentPage} numOfPages={pages.length} onClick={handlePageChange}/>
         </>
     );
 }
