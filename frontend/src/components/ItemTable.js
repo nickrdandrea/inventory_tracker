@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -72,7 +72,10 @@ export default function FilterableItemTable({items, pageSize}) {
         display: "Category"
     }
 
-    const filterValues = [...new Set(items.map((item) => item[filterAttribute.accessor]))]
+    const filterValues = useMemo(
+        () => [...new Set(items.map((item) => item[filterAttribute.accessor]))],
+        [items]
+    )
 
     const handleFilterChange = (e) => {
         setCurrentPage(1)
