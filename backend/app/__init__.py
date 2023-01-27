@@ -29,6 +29,7 @@ def create_app(config_class=Config):
 
     from app.resources import ItemResource, ItemsResource, SearchResource
     from app.resources import LoginResource, RegisterResource, AlertResource
+    from app.resources import ProfileResource, LogoutResource
     from app.resources import VendorResource, VendorItemResource, VendorsResource
 
     api = Api(app)
@@ -38,7 +39,9 @@ def create_app(config_class=Config):
     api.add_resource(VendorsResource, "/vendors")
     api.add_resource(VendorItemResource, "/<string:vendor_name>/<int:item_id>")
     api.add_resource(LoginResource, "/login")
+    api.add_resource(LogoutResource, "/logout")
     api.add_resource(RegisterResource, "/register")
+    api.add_resource(ProfileResource, "/profile")
     api.add_resource(AlertResource, "/alerts")
     api.add_resource(SearchResource, "/search")
     

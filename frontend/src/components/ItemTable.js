@@ -4,17 +4,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Pagination from 'react-bootstrap/Pagination';
 
-function FilterDropDown({ title, filterValues, onClick }) {
-    return (
-        <DropdownButton id="dropdown-button" title={title} variant="outline-dark">
-            <Dropdown.Item key="000" as="button" value="clear" onClick={onClick}>Clear Filter</Dropdown.Item>
-            {filterValues.map(value => {
-                return (<Dropdown.Item key={value} as="button" value={value} onClick={onClick}>{value}</Dropdown.Item>)
-            })}
-        </DropdownButton>
-    )
-}
-
 function ItemTableBody({ items }) {  
     return (
         <tbody>
@@ -63,6 +52,17 @@ function paginateList(list, pageSize) {
     return pages
 }
 
+function FilterDropDown({ title, filterValues, onClick }) {
+    return (
+        <DropdownButton id="dropdown-button" title={title} variant="outline-dark">
+            <Dropdown.Item key="000" as="button" value="clear" onClick={onClick}>Clear Filter</Dropdown.Item>
+            {filterValues.map(value => {
+                return (<Dropdown.Item key={value} as="button" value={value} onClick={onClick}>{value}</Dropdown.Item>)
+            })}
+        </DropdownButton>
+    )
+}
+
 export default function FilterableItemTable({items, pageSize}) {
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState(paginateList(items, pageSize))
@@ -72,8 +72,8 @@ export default function FilterableItemTable({items, pageSize}) {
         display: "Category"
     }
 
-    const filterValues = useMemo(
-        () => [...new Set(items.map((item) => item[filterAttribute.accessor]))],
+    const filterValues = useMemo(() =>
+        [...new Set(items.map((item) => item[filterAttribute.accessor]))],
         [items]
     )
 

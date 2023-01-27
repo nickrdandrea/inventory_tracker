@@ -13,7 +13,6 @@ class LoginResource(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         auth_type, encoded_credentials = args['Authorization'].split()
-        
         if auth_type.lower() == 'basic':
             credentials = b64decode(encoded_credentials).decode().split(':')
         else:
@@ -21,7 +20,6 @@ class LoginResource(Resource):
         
         username = credentials[0]
         password = credentials[1]
-                
         user = User.query.filter_by(name=username).first()
         if not user or not user.check_password(password):
             return {"message": "Wrong username or password."}, 401
