@@ -2,6 +2,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
 from app import jwt
+from app.models import Item
+
+watched_items = db.Table('watched_items', 
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('item_id', db.Integer, db.ForeignKey('item.id'))
+)
 
 class User(db.Model):
     __tablename__ = "user"
@@ -11,7 +17,13 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
 
     alerts = db.relationship("Alert", backref="user")
-
+    watched_items = db.relationship(
+        'Item', secondary=watched_items,
+        primaryjoin=(watched_items.c.user_id == id),
+        secondaryjoin=(watched_items.c.item_id == Item.id),
+        backref=db.backref('watched_items', lazy='dynamic'), lazy='dynamic'
+    )
+    
     def __repr__(self):
         return "User (" f"id={self.id!r}, " f"name={self.name!r})"
 
