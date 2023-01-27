@@ -2,10 +2,6 @@ from sqlalchemy.dialects.postgresql import TSVECTOR
 
 from app import db
 
-
-# class TSVector(db.TypeDecorator): 
-#     impl = TSVECTOR
-
 class Item(db.Model):
     __tablename__ = "item"
 
@@ -20,9 +16,6 @@ class Item(db.Model):
         'english',
         db.cast(db.func.coalesce(description, ''), db.TEXT)
     )    
-    # db.Column(TSVector(),db.Computed(
-    # "to_tsvector('english', description || ' ' || category)", persisted=True
-    # ))    
     
     __table_args__ = (
         db.Index(
