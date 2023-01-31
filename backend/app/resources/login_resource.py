@@ -25,4 +25,4 @@ class LoginResource(Resource):
             return {"message": "Wrong username or password."}, 401
         
         access_token = create_access_token(identity=user)
-        return {"access_token": access_token}, 200
+        return { "access_token": access_token, "username": user.name, "id": user.id }, 200
