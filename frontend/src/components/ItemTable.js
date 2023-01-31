@@ -63,14 +63,14 @@ function FilterDropDown({ title, filterValues, onClick }) {
     )
 }
 
+const filterAttribute = {
+    accessor: "category",
+    display: "Category"
+}
+
 export default function FilterableItemTable({items, pageSize}) {
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState(paginateList(items, pageSize))
-
-    const filterAttribute = {
-        accessor: "category",
-        display: "Category"
-    }
 
     const filterValues = useMemo(() =>
         [...new Set(items.map((item) => item[filterAttribute.accessor]))],
@@ -101,7 +101,9 @@ export default function FilterableItemTable({items, pageSize}) {
                 </thead>
                 <ItemTableBody items={pages[currentPage - 1]}/>
             </Table>
-            <SimplePagination currentPage={currentPage} numOfPages={pages.length} onClick={handlePageChange}/>
+            {(pages.length >= 2) ? (
+                <SimplePagination currentPage={currentPage} numOfPages={pages.length} onClick={handlePageChange}/> 
+            ) : null}
         </>
     );
 }

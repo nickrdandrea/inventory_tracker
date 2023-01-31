@@ -18,11 +18,7 @@ export default function Navigation() {
           </Nav>
           <Nav>
             <Nav.Item>
-              <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
-            </Nav.Item>
-            <Nav.Link className="px-0 d-none d-lg-block">/</Nav.Link>
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+              <Nav.Link as={NavLink} to="/auth">Login</Nav.Link>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
