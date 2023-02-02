@@ -1,28 +1,49 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useContext, useState } from 'react';
+import { UserDispatchContext } from '../UserContext';
 import { Buffer } from 'buffer';
 
-async function loginUser(username= '', password = '') {
-    const url = process.env.REACT_APP_BASE_API_URL + "/login";;
-    return fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'same-origin',
-        headers: {
-            Authorization: 'Basic ' + Buffer.from(username + ":" + password).toString('base64')
-        }
-    }).then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+function loginUser(credentials, successCallback, failureCallback) {
+  const url = process.env.REACT_APP_BASE_API_URL + "/login";
+  return fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'same-origin',
+      headers: {
+          Authorization: 'Basic ' + 
+          Buffer.from(credentials.username + ":" + credentials.password).toString('base64')
+      }
+  })
+  .then(response => response.json())
+  .then(userData => {
+    successCallback({
+      username: userData.username,
+      id: userData.id,
+      token: userData.access_token
+    })
+  })
+  .catch(failureCallback("Error logging in."))
 }
 
 export default function LoginForm() {
+  const [error, setError] = useState(null);
+  const dispatch = useContext(UserDispatchContext);
+
+  const loginSuccess = (userAction) => {
+    userAction['type'] = 'logged_in'
+    dispatch(userAction);
+  };
+  
+  const loginFailure = (errorMessage) => setError(errorMessage);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    let username = e.target[0].value;
-    let password = e.target[1].value;
-    loginUser(username, password);
+    const credentials = { 
+      username: e.target[0].value, 
+      password: e.target[1].value 
+    }
+    loginUser(credentials, loginSuccess, loginFailure);
   };
 
   return (
