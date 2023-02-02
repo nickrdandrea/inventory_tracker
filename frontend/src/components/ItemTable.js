@@ -24,16 +24,16 @@ function ItemTableBody({ items }) {
 function SimplePagination({currentPage, numOfPages, onClick}) {
     return (
         <Pagination>
-            <Pagination.Prev disabled={currentPage == 1} onClick={() => onClick(currentPage - 1)}/>
+            <Pagination.Prev disabled={currentPage === 1} onClick={() => onClick(currentPage - 1)}/>
             {[...Array(numOfPages)].map((x, i) => {
                 let pagiNum = i + 1
                 return (
-                    <Pagination.Item key={pagiNum} active={pagiNum == currentPage} onClick={() => onClick(pagiNum)}>
+                    <Pagination.Item key={pagiNum} active={pagiNum === currentPage} onClick={() => onClick(pagiNum)}>
                         {pagiNum}
                     </Pagination.Item>
                 )
             })}
-            <Pagination.Next disabled={currentPage == numOfPages} onClick={() => onClick(currentPage + 1)}/>
+            <Pagination.Next disabled={currentPage === numOfPages} onClick={() => onClick(currentPage + 1)}/>
         </Pagination>
     )
 }
