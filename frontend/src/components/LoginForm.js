@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useContext, useState } from 'react';
-import { UserDispatchContext } from '../UserContext';
+import { useState } from 'react';
+import { useUserDispatch } from '../contexts/UserContext';
 import { Buffer } from 'buffer';
 
 function loginUser(credentials, successCallback, failureCallback) {
@@ -28,13 +28,13 @@ function loginUser(credentials, successCallback, failureCallback) {
 
 export default function LoginForm() {
   const [error, setError] = useState(null);
-  const dispatch = useContext(UserDispatchContext);
+  const dispatch = useUserDispatch();
 
   const loginSuccess = (userAction) => {
     userAction['type'] = 'logged_in'
     dispatch(userAction);
   };
-  
+
   const loginFailure = (errorMessage) => setError(errorMessage);
 
   const handleFormSubmit = (e) => {

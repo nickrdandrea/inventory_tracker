@@ -1,7 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 
-export const UserContext = createContext(null);
-export const UserDispatchContext = createContext(null);
+const UserContext = createContext(null);
+const UserDispatchContext = createContext(null);
 
 const initialUser = {
     username: null,
@@ -31,7 +31,15 @@ function userReducer(state, action) {
     }
 };
 
-export default function UserProvider({ children }) {
+export function useUserContext() {
+    return useContext(UserContext);
+}
+
+export function useUserDispatch() {
+    return useContext(UserDispatchContext);
+}
+
+export function UserProvider({ children }) {
     const [user, dispatch] = useReducer(userReducer, initialUser);
 
     return (
