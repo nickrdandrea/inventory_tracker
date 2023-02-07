@@ -1,5 +1,6 @@
 # Compiled
 __pycache__/
+.pytest_cache
 
 # Database
 *.db
