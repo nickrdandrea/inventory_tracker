@@ -4,7 +4,7 @@ import InventoryDisplay from '../components/ItemDisplay'
 export default function ToyTrove() {
     return (
         <Body>
-            <InventoryDisplay vendor="ToyTrove" />
+            <InventoryDisplay vendor_name="ToyTrove" />
         </Body>
     )
 }

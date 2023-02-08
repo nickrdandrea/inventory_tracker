@@ -2,42 +2,24 @@ import { useCallback, useEffect, useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import SearchBar from "./SearchBar"
 import FilterableItemTable from "./ItemTable";
+import { getVendorItems, searchVendorItems } from "../api/vendor";
 
-const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
-const SEARCH_API_URL = process.env.REACT_APP_BASE_API_URL + "/search?terms=";
 const TABLE_PAGE_SIZE = 25;
 
-export default function InventoryDisplay(props) {
+export default function InventoryDisplay({ vendor_name }) {
     const [items, setItems] = useState(null);
-    const [searchTerms, setSearchTerms] = useState(null);
 
-    const fetchItems = useCallback(async (url) => {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            const json = await response.json();
-            setItems(json);
-        } catch(error) {
-            console.log(error);
-        }
+    useEffect( () => {
+        const getItems = async () => getVendorItems(vendor_name, setItems, error => console.log(error))
+        getItems()
     }, []);
 
-    const loadEffect = useEffect(() => {
-        if (items === null) { 
-            fetchItems(BASE_API_URL); 
-        } 
-    }, [items, fetchItems]);
-
-    const searchEffect = useEffect(() => {
-        const prepTerms = (terms) => { return terms.trim().replace(' ', '&'); }
-        if (searchTerms !== null) {
-            fetchItems(SEARCH_API_URL + prepTerms(searchTerms));
+    const onSubmit = (terms) => {
+        let vendorItems = searchVendorItems(vendor_name, terms);
+        if (vendorItems) {
+            setItems(vendorItems)
         }
-    }, [searchTerms, fetchItems]);
-
-    const onSubmit  = (input) => { setSearchTerms(input); }
+    }
 
     return (
         <Container>

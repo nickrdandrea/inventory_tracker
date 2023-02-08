@@ -2,29 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import { useUserDispatch } from '../contexts/UserContext';
-import { Buffer } from 'buffer';
-
-function loginUser(credentials, successCallback, failureCallback) {
-  const url = process.env.REACT_APP_BASE_API_URL + "/login";
-  return fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'same-origin',
-      headers: {
-          Authorization: 'Basic ' + 
-          Buffer.from(credentials.username + ":" + credentials.password).toString('base64')
-      }
-  })
-  .then(response => response.json())
-  .then(userData => {
-    successCallback({
-      username: userData.username,
-      id: userData.id,
-      token: userData.access_token
-    })
-  })
-  .catch(failureCallback("Error logging in."))
-}
+import loginUser from '../api/auth';
 
 export default function LoginForm() {
   const [error, setError] = useState(null);
