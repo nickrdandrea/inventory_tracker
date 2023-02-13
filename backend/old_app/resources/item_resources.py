@@ -4,9 +4,9 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
 
-from app import db
-from app.models import Item, Vendor
-from app.schemas.item_schema import ItemSchema
+from old_app import db
+from old_app.models import Item, Vendor
+from old_app.schemas.item_schema import ItemSchema
 
 class ItemResource(Resource):
 

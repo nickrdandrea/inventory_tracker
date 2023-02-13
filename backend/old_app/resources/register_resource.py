@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 
-from app import db
-from app.models.user import User
+from old_app import db
+from old_app.models.user import User
 
 
 class RegisterResource(Resource):

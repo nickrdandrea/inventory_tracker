@@ -3,9 +3,9 @@ from flask_restful import Resource, abort
 from marshmallow import ValidationError
 from sqlite3 import IntegrityError
 
-from app.models import Item, Vendor
-from app.schemas import ItemSchema, VendorSchema
-from app import db
+from old_app.models import Item, Vendor
+from old_app.schemas import ItemSchema, VendorSchema
+from old_app import db
 
 def get_vendor_by_name(vendor_name):
     vendor_name = vendor_name.lower().strip()

@@ -4,10 +4,10 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
 
-from app import db
-from app.models.vendor import Vendor
-from app.models.alert import Alert
-from app.schemas.alert_schema import AlertSchema
+from old_app import db
+from old_app.models.vendor import Vendor
+from old_app.models.alert import Alert
+from old_app.schemas.alert_schema import AlertSchema
 
 
 class AlertResource(Resource):

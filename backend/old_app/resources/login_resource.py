@@ -2,7 +2,7 @@ from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 from base64 import b64decode
 
-from app.models.user import User
+from old_app.models.user import User
 
 class LoginResource(Resource):
     def __init__(self) -> None:

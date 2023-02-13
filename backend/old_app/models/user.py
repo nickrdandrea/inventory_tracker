@@ -1,8 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import db
-from app import jwt
-from app.models import Item
+from old_app import db
+from old_app import jwt
+from old_app.models import Item
 
 watched_items = db.Table('watched_items', 
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),

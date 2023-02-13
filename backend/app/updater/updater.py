@@ -1,9 +1,9 @@
-from app import create_app
-from app.db_utils import upsert_item
-from app.models import Item, Vendor
-from app.schemas import ItemSchema
+from old_app import create_app
+from old_app.db_utils import upsert_item
+from old_app.models import Item, Vendor
+from old_app.schemas import ItemSchema
 
-from app.updater.sources.thetoytrove_preorder import TheToyTrovePreorderScraper
+from old_app.updater.sources.thetoytrove_preorder import TheToyTrovePreorderScraper
 
 app = create_app()
 app.app_context().push()

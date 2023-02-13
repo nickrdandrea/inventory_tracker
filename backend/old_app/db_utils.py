@@ -1,9 +1,9 @@
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from app import db
-from app.models import Alert, Item, User, Vendor
-from app.schemas import ItemSchema
+from old_app import db
+from old_app.models import Alert, Item, User, Vendor
+from old_app.schemas import ItemSchema
 
 
 def safe_commit():

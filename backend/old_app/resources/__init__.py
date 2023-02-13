@@ -1,0 +1,8 @@
+from old_app.resources.item_resources import ItemResource, ItemsResource
+from old_app.resources.login_resource import LoginResource
+from old_app.resources.logout_resource import LogoutResource
+from old_app.resources.register_resource import RegisterResource
+from old_app.resources.profile_resource import ProfileResource
+from old_app.resources.vendor_resources import VendorResource, VendorItemResource, VendorsResource
+from old_app.resources.alert_resource import AlertResource
+from old_app.resources.search_resource import SearchResource

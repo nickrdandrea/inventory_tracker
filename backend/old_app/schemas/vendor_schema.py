@@ -1,16 +1,16 @@
+from unicodedata import name
 from marshmallow import Schema, fields, post_load
-from app.models.item import Item
+from old_app.models.vendor import Vendor
 
 
-class ItemSchema(Schema):
+class VendorSchema(Schema):
+
     id = fields.Integer()
-    description = fields.String(allow_none=False)
-    category = fields.String()
+    name = fields.String(allow_none=False)
     url = fields.String()
-    vendor_id = fields.Integer(allow_none=False)
     date_created = fields.DateTime()
     last_updated = fields.DateTime()
 
     @post_load
     def make_item(self, data, **kwargs):
-        return Item(**data)
+        return Vendor(**data)

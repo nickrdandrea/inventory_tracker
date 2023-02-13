@@ -1,4 +1,4 @@
-from app import db
+from old_app import db
 
 
 class Alert(db.Model):

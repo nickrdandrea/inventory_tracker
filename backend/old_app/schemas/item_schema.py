@@ -1,16 +1,16 @@
 from marshmallow import Schema, fields, post_load
-from app.models.alert import Alert
+from old_app.models.item import Item
 
 
-class AlertSchema(Schema):
+class ItemSchema(Schema):
     id = fields.Integer()
     description = fields.String(allow_none=False)
     category = fields.String()
-    user_id = fields.Integer(allow_none=False)
+    url = fields.String()
     vendor_id = fields.Integer(allow_none=False)
     date_created = fields.DateTime()
     last_updated = fields.DateTime()
 
     @post_load
     def make_item(self, data, **kwargs):
-        return Alert(**data)
+        return Item(**data)
