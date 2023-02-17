@@ -1,16 +1,6 @@
 import os
-from sqlalchemy.orm import registry, relationship
+from sqlalchemy.orm import registry, relationship, sessionmaker
 from sqlalchemy import create_engine
-
-mapper_registry = registry()
-
-def map_models():
-    from app.models import Item, Vendor
-    from app.adapters.orm.tables import items, vendors
-    mapper_registry.map_imperatively(Item, items)
-    mapper_registry.map_imperatively(Vendor, vendors, properties={
-        "items": relationship(Item, backref="items")
-    })
 
 def get_db_uri():
     driver = os.environ.get('DB_DRIVER')
@@ -20,8 +10,20 @@ def get_db_uri():
     name = os.environ.get('DB_NAME')
     return f"{driver}://{user}:{password}@{host}/{name}"
 
-SQLALCHEMYENGINE = create_engine(get_db_uri())
-    
+SQLALCHEMY_ENGINE = create_engine(get_db_uri())
+SESSION_MAKER = sessionmaker(bind=SQLALCHEMY_ENGINE, expire_on_commit=False)
+MAPPER_REGISTRY = registry()
+MAPPER_REGISTRY.metadata.bind = SQLALCHEMY_ENGINE
+
+def map_models():
+    from app.models import Item, Vendor
+    from app.adapters.orm.tables import items, vendors
+    MAPPER_REGISTRY.map_imperatively(Item, items)
+    MAPPER_REGISTRY.map_imperatively(Vendor, vendors, properties={
+        "items": relationship(Item, backref="items")
+    })
+
 def init_db():
+    MAPPER_REGISTRY.metadata.clear()
     map_models()
-    mapper_registry.metadata.create_all(SQLALCHEMYENGINE)
+    MAPPER_REGISTRY.metadata.create_all()

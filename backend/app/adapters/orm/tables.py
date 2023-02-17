@@ -1,10 +1,10 @@
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, DateTime
 
-from app.adapters.orm import mapper_registry
+from app.adapters.orm import MAPPER_REGISTRY
  
 vendors = Table(
     "vendors",
-    mapper_registry.metadata,
+    MAPPER_REGISTRY.metadata,
     Column("id", Integer, autoincrement=True, primary_key=True),
     Column("name", String, unique=True, nullable=False),
     Column("url", String)
@@ -12,7 +12,7 @@ vendors = Table(
 
 items = Table(
     "items",
-    mapper_registry.metadata,
+    MAPPER_REGISTRY.metadata,
     Column("id", Integer, autoincrement=True, primary_key=True),
     Column("description", String, unique=True),
     Column("category", String),

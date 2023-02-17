@@ -7,4 +7,7 @@ class Vendor:
         self.name = name
         self.url = url
         self._items = set() #type: Set[Item]
+    
+    def __repr__(self):
+        return f"Vendor Name: {self.name} ID: {self.id}"
 
