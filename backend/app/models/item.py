@@ -1,9 +1,6 @@
-from typing import Optional
-from datetime import date
+from app.models import BaseModel
 
-from app.models.vendor import Vendor
-
-class Item:
+class Item(BaseModel):
     def __init__(self, 
                  description: str, 
                  category: str, 
@@ -20,10 +17,10 @@ class Item:
         self.vendor_id = vendor_id
         self.last_seen = last_seen
     
-    def set_vendor(self, vendor: Vendor):
+    def set_vendor(self, vendor):
         self.vendor_id = vendor.id
 
     def __repr__(self):
-        return f"Item Name: {self.name} ID: {self.id}"
+        return f"Item Description: {self.description} ID: {self.id}"
 
 

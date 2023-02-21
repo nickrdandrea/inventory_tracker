@@ -1,7 +1,6 @@
-from typing import Optional
-from datetime import date
+from app.models import BaseModel
 
-class Vendor:
+class Vendor(BaseModel):
     def __init__(self, name: str, url: str, id = None):
         self.id = id
         self.name = name

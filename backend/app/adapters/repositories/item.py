@@ -1,4 +1,4 @@
-from app.adapters.repositories.sqlalchemy_repository import SqlAlchemyRepository
+from app.adapters.repositories.sqlalchemy import SqlAlchemyRepository
 from app.models import Item
 
 class ItemRepository(SqlAlchemyRepository):
@@ -6,4 +6,4 @@ class ItemRepository(SqlAlchemyRepository):
         super().__init__(Item)
 
     def get_by_description(self, description):
-        return self.get_by_attribute('description', description)
+        return self.get_by_attribute('description', description)[0]

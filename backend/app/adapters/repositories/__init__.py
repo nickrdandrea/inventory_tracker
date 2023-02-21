@@ -17,5 +17,5 @@ class AbstractRepository(abc.ABC):
     def delete(self, model_instance):
         raise NotImplementedError
 
-from app.adapters.repositories.vendor_repository import VendorRepository
-from app.adapters.repositories.item_repository import ItemRepository
+from app.adapters.repositories.vendor import VendorRepository
+from app.adapters.repositories.item import ItemRepository
