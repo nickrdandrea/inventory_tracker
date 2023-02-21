@@ -6,4 +6,7 @@ class ItemRepository(SqlAlchemyRepository):
         super().__init__(Item)
 
     def get_by_description(self, description):
-        return self.get_by_attribute('description', description)[0]
+        result = self.get_by_attribute('description', description)
+        if result:
+            return result[0]
+        return None
