@@ -1,25 +1,21 @@
 import abc
 
-from app.adapters.orm import SESSION_MAKER
-
-class SqlAlchemyRepository(abc.ABC):
-    def __init__(self):
-        self.sessionmaker = SESSION_MAKER
-    
+class AbstractRepository(abc.ABC):
     @abc.abstractmethod
-    def add(self, model):
+    def add(self, model_instance):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def get(self, model):
+    def get(self, model_instance):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def update(self, model, id):
+    def update(self, model_instance, model_instance_id):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete(self, model):
+    def delete(self, model_instance):
         raise NotImplementedError
-    
+
 from app.adapters.repositories.vendor_repository import VendorRepository
+from app.adapters.repositories.item_repository import ItemRepository
