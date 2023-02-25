@@ -1,10 +1,11 @@
 import pytest
 
-from app import create_app
+from config import TestingConfig
+from app.api import create_app
 
 @pytest.fixture(scope="class")
 def app():
-    app = create_app()
+    app = create_app(config=TestingConfig)
     return app
 
 @pytest.fixture(scope="class")

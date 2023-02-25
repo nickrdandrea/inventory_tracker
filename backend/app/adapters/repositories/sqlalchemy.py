@@ -2,12 +2,12 @@ from sqlalchemy import select, delete, update
 from typing import Any, Dict, List, Optional
 
 from app.models import BaseModel
-from app.adapters.orm import SESSION_MAKER
+from app.adapters.orm import Database
 from app.adapters.repositories import AbstractRepository
 
 class SqlAlchemyRepository(AbstractRepository):
-    def __init__(self, model: BaseModel):
-        self.sessionmaker = SESSION_MAKER
+    def __init__(self, model: BaseModel, db: Database):
+        self.sessionmaker = db.session_factory
         self.model = model
     
     def add(self, model_instance: BaseModel) -> None:
